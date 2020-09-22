@@ -1,14 +1,28 @@
 const content = document.getElementById("Content");
 const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'];
 const inputs = [0, 0, 0, 0, 0, 0];
+const inputstate = [0, 0, 0, 0, 0, 0];
 
+function displayPlay(){
+    document.addEventListener('keydown', playListener);
+}
 
 function displayOptions(){
-    string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button><br>(ESC to cancel)<br>";
+    string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button><br>  (ESC to cancel)<br>";
     for (str of buttons){
         string += str.toUpperCase() + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>Unbound</button><br>"
     }
     content.innerHTML = string;
+
+    document.removeEventListener('keydown', playListener);
+}
+
+function playListener(event) {
+    index = inputs.indexOf(event.code);
+    if(index !== -1){
+        inputstate[index] = !inputstate[index];
+        console.log(inputstate);
+    }
 }
 
 async function bindAll() {

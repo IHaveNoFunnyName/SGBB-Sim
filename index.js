@@ -4,7 +4,7 @@ const inputs = [0, 0, 0, 0, 0, 0];
 
 
 function displayOptions(){
-    string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button> (ESC to cancel)<br>";
+    string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button><br>(ESC to cancel)<br>";
     for (str of buttons){
         string += str.toUpperCase() + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>Unbound</button><br>"
     }

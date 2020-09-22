@@ -1,10 +1,11 @@
 const content = document.getElementById("Content");
 const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'];
 const inputs = [0, 0, 0, 0, 0, 0];
-const inputstate = [0, 0, 0, 0, 0, 0];
+const inputstate = [false, false, false, false, false, false];
 
 function displayPlay(){
-    document.addEventListener('keydown', playListener);
+    document.addEventListener('keydown', playListenerDown);
+    document.addEventListener('keyup', playListenerUp);
 }
 
 function displayOptions(){
@@ -14,13 +15,22 @@ function displayOptions(){
     }
     content.innerHTML = string;
 
-    document.removeEventListener('keydown', playListener);
+    document.removeEventListener('keydown', playListenerDown);
+    document.removeEventListener('keyup', playListenerUp);
 }
 
-function playListener(event) {
+function playListenerDown(event) {
     index = inputs.indexOf(event.code);
     if(index !== -1){
-        inputstate[index] = !inputstate[index];
+        inputstate[index] = true;
+        console.log(inputstate);
+    }
+}
+
+function playListenerUp(event) {
+    index = inputs.indexOf(event.code);
+    if(index !== -1){
+        inputstate[index] = false;
         console.log(inputstate);
     }
 }

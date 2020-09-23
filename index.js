@@ -1,6 +1,7 @@
 const content = document.getElementById("Content");
 const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'];
-const inputs = ["u", "i", "o", "j", "k", "l"];
+const inputs = ["U", "I", "O", "J", "K", "L"];
+const inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL"];
 let inputState = [false, false, false, false, false, false];
 let prevInputState = [false, false, false, false, false, false];
 const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
@@ -46,7 +47,7 @@ function handleInput() {
 }
 
 function playListenerDown(event) {
-    index = inputs.indexOf(event.key);
+    index = inputCs.indexOf(event.code);
     if(index !== -1){
         inputState[index] = true;
         handleInput();
@@ -54,7 +55,7 @@ function playListenerDown(event) {
 }
 
 function playListenerUp(event) {
-    index = inputs.indexOf(event.key);
+    index = inputCs.indexOf(event.code);
     if(index !== -1){
         inputState[index] = false;
         handleInput();
@@ -102,13 +103,15 @@ function bindKey(event){
         this.btn.innerHTML = this.prev;
         document.removeEventListener('keydown', this.bind);
     } else {
-        if (inputs.indexOf(event.code) !== -1){
-            index = inputs.indexOf(event.code);
+        if (inputCs.indexOf(event.code) !== -1){
+            index = inputCs.indexOf(event.code);
+            inputCs[index] = 0;
             inputs[index] = 0;
             document.getElementById(buttons[index] + 'b').innerHTML = "Unbound";
         }
-            inputs[this.input] = event.key;
-            this.btn.innerHTML = event.key.toUpperCase()
+            inputCs[this.input] = event.code;
+            inputs[this.input] = event.key.toUpperCase();
+            this.btn.innerHTML = inputs[this.input];
             document.removeEventListener('keydown', this.bind);
             this.resolve();
     }

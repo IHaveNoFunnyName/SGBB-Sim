@@ -1,17 +1,29 @@
 const content = document.getElementById("Content");
 const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'];
-const inputs = [0, 0, 0, 0, 0, 0];
-const inputstate = [false, false, false, false, false, false];
+const inputs = ["u", "i", "o", "j", "k", "l"];
+let inputState = [false, false, false, false, false, false];
+let prevInputState = [false, false, false, false, false, false];
+const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
 
 function displayPlay(){
     document.addEventListener('keydown', playListenerDown);
     document.addEventListener('keyup', playListenerUp);
+
+    string = ""
+
+    for (img of imgs){
+        string += "<img id='" + img + "' src='" + img + "0.png'>";
+        string += img === "Sg_hp" ? "<br>" : "";
+    }
+    content.innerHTML = string;
 }
 
 function displayOptions(){
     string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button><br>  (ESC to cancel)<br>";
-    for (str of buttons){
-        string += str.toUpperCase() + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>Unbound</button><br>"
+    for ([i, str] of buttons.entries()){
+        string += str.toUpperCase() + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>";
+        string += inputs[i] ? inputs[i].toUpperCase() : "Unbound"; 
+        string += "</button><br>";
     }
     content.innerHTML = string;
 
@@ -19,19 +31,33 @@ function displayOptions(){
     document.removeEventListener('keyup', playListenerUp);
 }
 
+function handleInput() {
+    let anything = 0;
+
+    for (i in inputState) {
+        if (inputState[i] != prevInputState[i]){
+            //Give button colour
+            document.getElementById(imgs[i]).src = imgs[i] + +inputState[i] + ".png";
+            anything = i <= 6 ? 1 : 2
+        }
+    }
+    console.log(anything);
+    if (anything) prevInputState = [...inputState];
+}
+
 function playListenerDown(event) {
-    index = inputs.indexOf(event.code);
+    index = inputs.indexOf(event.key);
     if(index !== -1){
-        inputstate[index] = true;
-        console.log(inputstate);
+        inputState[index] = true;
+        handleInput();
     }
 }
 
 function playListenerUp(event) {
-    index = inputs.indexOf(event.code);
+    index = inputs.indexOf(event.key);
     if(index !== -1){
-        inputstate[index] = false;
-        console.log(inputstate);
+        inputState[index] = false;
+        handleInput();
     }
 }
 
@@ -81,9 +107,11 @@ function bindKey(event){
             inputs[index] = 0;
             document.getElementById(buttons[index] + 'b').innerHTML = "Unbound";
         }
-            inputs[this.input] = event.code;
+            inputs[this.input] = event.key;
             this.btn.innerHTML = event.key.toUpperCase()
             document.removeEventListener('keydown', this.bind);
             this.resolve();
     }
 }
+
+displayPlay();

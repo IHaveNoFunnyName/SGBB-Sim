@@ -33,13 +33,15 @@ function displayOptions(){
 }
 
 function handleInput() {
+    //0 = no change, 1 = direction button pressed or released, 2 = note button released, 3 = note button pressed
+    //play notes on 3
     let anything = 0;
 
     for (i in inputState) {
         if (inputState[i] != prevInputState[i]){
             //Give button colour
             document.getElementById(imgs[i]).src = imgs[i] + +inputState[i] + ".png";
-            anything = i <= 6 ? 1 : 2
+            anything = i <= 6 ? 2+inputState[i] : 1
         }
     }
     console.log(anything);

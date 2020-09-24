@@ -13,7 +13,7 @@ function displayPlay(){
     string = ""
 
     for (img of imgs){
-        string += "<img id='" + img + "' src='" + img + "0.png'>";
+        string += "<img id='" + img + "' src='./img/" + img + "0.png'>";
         string += img === "Sg_hp" ? "<br>" : "";
     }
     content.innerHTML = string;
@@ -40,7 +40,7 @@ function handleInput() {
     for (i in inputState) {
         if (inputState[i] != prevInputState[i]){
             //Give button colour
-            document.getElementById(imgs[i]).src = imgs[i] + +inputState[i] + ".png";
+            document.getElementById(imgs[i]).src = "./img/" + imgs[i] + +inputState[i] + ".png";
             anything = i <= 6 ? 2+inputState[i] : 1
         }
     }

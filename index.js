@@ -182,6 +182,7 @@ function load(){
 }
 
 function preLoadAudio(){ //hopefully, who knows
+    cache = [];
     for (file of punch.concat(kick)) {
         if(file) {
             for (oct of ["-", "0", "+"]) {
@@ -196,6 +197,7 @@ function preLoadAudio(){ //hopefully, who knows
             cache.push(img);
         }
     }
+    setTimeout(preLoadAudio, 300000);
 }
 
 function blurAll(){

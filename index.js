@@ -8,6 +8,7 @@ const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
 const punch = [undefined, "C0", "F+", "D+", "F0", "D0", "E0", "C+"];
 const kick = [undefined, "G0", "B0", "G+", "A+", undefined, "A0"];
 let timeout, sound, oldsound;
+volume = 100;
 
 function displayPlay(){
     document.addEventListener('keydown', playListenerDown);
@@ -29,10 +30,19 @@ function displayOptions(){
         string += inputs[i] ? inputs[i].toUpperCase() : "Unbound"; 
         string += "</button><br>";
     }
+
+    string += "Volume: <input type=\"range\" min=\"0\" max=\"100\" value=\"" + volume + "\" class=\"slider\" id=\"volume\" oninput='updateVolume()'><div id=\"volumeDisplay\">100</div>";
     content.innerHTML = string;
+
+    updateVolume();
 
     document.removeEventListener('keydown', playListenerDown);
     document.removeEventListener('keyup', playListenerUp);
+}
+
+function updateVolume() {
+    volume = document.getElementById('volume').value;
+    document.getElementById('volumeDisplay').innerHTML = volume + "%"; 
 }
 
 async function handleInput() {
@@ -64,6 +74,7 @@ async function handleInput() {
 
 function play(path) {
     sound = new Audio(path);
+    sound.volume = volume/100;
     timeout = setTimeout( () => {
         sound.play();
     }, 16);
@@ -76,7 +87,7 @@ function stop() {
 
 function fade() {
     try{
-        oldsound.volume -= 1/8
+        oldsound.volume -= (volume/100)/8
         if (oldsound.volume > 0) setTimeout(fade, 4);
     } catch (e) {};
 }

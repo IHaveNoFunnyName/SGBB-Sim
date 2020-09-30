@@ -5,6 +5,9 @@ const inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL"];
 let inputState = [false, false, false, false, false, false];
 let prevInputState = [false, false, false, false, false, false];
 const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
+const punch = [undefined, "C0", "F+", "D+", "F0", "D0", "E0", "C+"];
+const kick = [undefined, "G0", "B0", "G+", "A+", undefined, "A0"];
+let timeout, sound, oldsound;
 
 function displayPlay(){
     document.addEventListener('keydown', playListenerDown);
@@ -32,7 +35,7 @@ function displayOptions(){
     document.removeEventListener('keyup', playListenerUp);
 }
 
-function handleInput() {
+async function handleInput() {
     //0 = no change, 1 = direction button pressed or released, 2 = note button released, 3 = note button pressed
     //play notes on 3
     let anything = 0;
@@ -44,8 +47,38 @@ function handleInput() {
             anything = i <= 6 ? 2+inputState[i] : 1
         }
     }
-    console.log(anything);
-    if (anything) prevInputState = [...inputState];
+
+    if (anything) {
+        prevInputState = [...inputState];
+        if (anything === 3) {
+            let note = punch[parseInt("" + +inputState[0] + +inputState[1] + +inputState[2], 2)];
+            if (!note) note = kick[parseInt("" + +inputState[3] + +inputState[4] + +inputState[5], 2)]
+            if (note) {
+                oldsound = sound;
+                stop();
+                play('snd/' + 0 + note + '.mp3');
+            }
+        }
+    }
+}
+
+function play(path) {
+    sound = new Audio(path);
+    timeout = setTimeout( () => {
+        sound.play();
+    }, 16);
+}
+
+function stop() {
+    clearTimeout(timeout);
+    setTimeout(fade, 4)
+}
+
+function fade() {
+    try{
+        oldsound.volume -= 1/8
+        if (oldsound.volume > 0) setTimeout(fade, 4);
+    } catch (e) {};
 }
 
 function playListenerDown(event) {

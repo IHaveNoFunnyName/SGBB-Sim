@@ -181,12 +181,16 @@ function load(){
     }
 }
 
-function preLoadAudio(){ //hopefully, who knows
+async function preLoadAudio(){ //hopefully, who knows
     cache = [];
     for (file of punch.concat(kick)) {
         if(file) {
             for (oct of ["-", "0", "+"]) {
-            cache.push(new Audio('snd/' + oct + file + '.mp3'));
+            aud = new Audio('snd/' + oct + file + '.mp3');
+            try {
+                await aud.play();
+            } catch (e) {}
+            aud.pause();
             }
         }
     }

@@ -187,5 +187,16 @@ function load(){
     }
 }
 
+function preLoadAudio(){ //hopefully, who knows
+    for (file of punch.concat(kick)) {
+        if(file) {
+            for (oct of ["-", "0", "+"]) {
+            new Audio('snd/' + oct + file + '.mp3')
+            }
+        }
+    }
+}
+
 displayPlay();
 load();
+preLoadAudio();

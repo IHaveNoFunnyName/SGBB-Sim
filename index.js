@@ -76,7 +76,8 @@ async function handleInput() {
 }
 
 function play(path) {
-    sound = new Audio(path);
+    let s = new Audio(path);
+    sound = s;
     sound.volume = volume/100;
     timeout = setTimeout( () => {
         sound.play();
@@ -85,14 +86,7 @@ function play(path) {
 
 function stop(old) {
     clearTimeout(timeout);
-    setTimeout(() => {fade(old)}, 4)
-}
-
-function fade(old) {
-    try{
-        old.volume -= (volume/100)/8
-        if (old.volume > 0) setTimeout(() => {fade(old)}, 4);
-    } catch (e) {};
+    $(old).animate({volume: 0}, 160);
 }
 
 function playListenerDown(event) {

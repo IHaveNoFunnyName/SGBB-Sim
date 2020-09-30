@@ -127,6 +127,7 @@ async function tryBind(input){
 
 async function bind(input){
     
+    blurAll();
     let pass = {};
     let button =  document.getElementById(input + "b");
     let bind = bindKey.bind(pass);
@@ -199,6 +200,13 @@ function preLoadAudio(){ //hopefully, who knows
             img.src = "./img/" + file + i + ".png"
         }
     }
+}
+
+function blurAll(){
+    var tmp = document.createElement("input");
+    document.body.appendChild(tmp);
+    tmp.focus();
+    document.body.removeChild(tmp);
 }
 
 displayPlay();

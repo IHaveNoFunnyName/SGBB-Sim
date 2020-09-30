@@ -60,8 +60,6 @@ async function handleInput() {
         }
     }
 
-    console.log(inputState);
-
     if (anything) {
         prevInputState = [...inputState];
         if (anything === 3) {

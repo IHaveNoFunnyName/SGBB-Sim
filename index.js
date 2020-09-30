@@ -1,7 +1,7 @@
 const content = document.getElementById("Content");
 const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk', "\u2191", "\u2193", "\u2192", "\u2190"];
-const inputs = ["U", "I", "O", "J", "K", "L", "W", "S", "A", "D"];
-const inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL", "KeyW", "KeyS", "KeyA", "KeyD"];
+let inputs = ["U", "I", "O", "J", "K", "L", "W", "S", "A", "D"];
+let inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL", "KeyW", "KeyS", "KeyA", "KeyD"];
 let inputState = [false, false, false, false, false, false, false, false, false];
 let prevInputState = [false, false, false, false, false, false, false, false, false];
 const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
@@ -9,7 +9,7 @@ const punch = [undefined, "C0", "F+", "D+", "F0", "D0", "E0", "C+"];
 const kick = [undefined, "G0", "B0", "G+", "A+", undefined, "A0"];
 const octave = {'1': "+", '0': "0", '-1': "-"};
 let timeout, sound, oldsound;
-volume = 100;
+let volume = 100;
 
 function displayPlay(){
     document.addEventListener('keydown', playListenerDown);
@@ -43,7 +43,8 @@ function displayOptions(){
 
 function updateVolume() {
     volume = document.getElementById('volume').value;
-    document.getElementById('volumeDisplay').innerHTML = volume + "%"; 
+    document.getElementById('volumeDisplay').innerHTML = volume + "%";
+    save();
 }
 
 async function handleInput() {
@@ -55,7 +56,7 @@ async function handleInput() {
         if (inputState[i] != prevInputState[i]){
             //Give button colour
             if (i < 6) document.getElementById(imgs[i]).src = "./img/" + imgs[i] + +inputState[i] + ".png";
-            anything = i <= 6 ? 2+inputState[i] : 1
+            anything = i < 6 ? 2+inputState[i] : 1
         }
     }
 
@@ -159,12 +160,32 @@ function bindKey(event){
             inputs[index] = 0;
             document.getElementById(buttons[index] + 'b').innerHTML = "Unbound";
         }
-            inputCs[this.input] = event.code;
-            inputs[this.input] = event.key.toUpperCase();
-            this.btn.innerHTML = inputs[this.input];
-            document.removeEventListener('keydown', this.bind);
-            this.resolve();
+        inputCs[this.input] = event.code;
+        inputs[this.input] = event.key.toUpperCase();
+        this.btn.innerHTML = inputs[this.input];
+        document.removeEventListener('keydown', this.bind);
+        this.resolve();
+        save();
+    }
+}
+
+function save(){
+    options = {
+        inputs: inputs,
+        inputCs: inputCs,
+        volume: volume
+    }
+    localStorage.setItem('options', JSON.stringify(options));
+}
+
+function load(){
+    options = JSON.parse(localStorage.getItem('options'));
+    if(options){
+        inputs = options.inputs;
+        inputCs = options.inputCs;
+        volume = options.volume;
     }
 }
 
 displayPlay();
+load();

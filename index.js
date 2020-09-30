@@ -10,6 +10,7 @@ const kick = [undefined, "G0", "B0", "G+", "A+", undefined, "A0"];
 const octave = {'1': "+", '0': "0", '-1': "-"};
 let timeout, sound, oldsound;
 let volume = 100;
+let cache = [];
 
 function displayPlay(){
     document.addEventListener('keydown', playListenerDown);
@@ -184,7 +185,7 @@ function preLoadAudio(){ //hopefully, who knows
     for (file of punch.concat(kick)) {
         if(file) {
             for (oct of ["-", "0", "+"]) {
-            new Audio('snd/' + oct + file + '.mp3')
+            cache.push(new Audio('snd/' + oct + file + '.mp3'));
             }
         }
     }
@@ -192,6 +193,7 @@ function preLoadAudio(){ //hopefully, who knows
         for (i of [0, 1]) {
             img = new Image();
             img.src = "./img/" + file + i + ".png"
+            cache.push(img);
         }
     }
 }

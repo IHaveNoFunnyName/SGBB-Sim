@@ -68,7 +68,7 @@ async function handleInput() {
             if (note) {
                 oct = inputState[6] - inputState[7];
                 oldsound = sound;
-                stop();
+                stop(oldsound);
                 play('snd/' + octave[oct] + note + '.mp3');
             }
         }
@@ -83,15 +83,15 @@ function play(path) {
     }, 16);
 }
 
-function stop() {
+function stop(old) {
     clearTimeout(timeout);
-    setTimeout(fade, 4)
+    setTimeout(() => {fade(old)}, 4)
 }
 
-function fade() {
+function fade(old) {
     try{
-        oldsound.volume -= (volume/100)/8
-        if (oldsound.volume > 0) setTimeout(fade, 4);
+        old.volume -= (volume/100)/8
+        if (old.volume > 0) setTimeout(() => {fade(old)}, 4);
     } catch (e) {};
 }
 

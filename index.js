@@ -193,6 +193,12 @@ function preLoadAudio(){ //hopefully, who knows
             }
         }
     }
+    for (file of imgs) {
+        for (i of [0, 1]) {
+            img = new Image();
+            img.src = "./img/" + file + i + ".png"
+        }
+    }
 }
 
 displayPlay();

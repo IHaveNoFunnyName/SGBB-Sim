@@ -1,12 +1,13 @@
 const content = document.getElementById("Content");
-const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk'];
-const inputs = ["U", "I", "O", "J", "K", "L"];
-const inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL"];
-let inputState = [false, false, false, false, false, false];
-let prevInputState = [false, false, false, false, false, false];
+const buttons = ['lp', 'mp', 'hp', 'lk', 'mk', 'hk', "\u2191", "\u2193", "\u2192", "\u2190"];
+const inputs = ["U", "I", "O", "J", "K", "L", "W", "S", "A", "D"];
+const inputCs = ["KeyU", "KeyI", "KeyO", "KeyJ", "KeyK", "KeyL", "KeyW", "KeyS", "KeyA", "KeyD"];
+let inputState = [false, false, false, false, false, false, false, false, false];
+let prevInputState = [false, false, false, false, false, false, false, false, false];
 const imgs = ["Sg_lp", "Sg_mp", "Sg_hp", "Sg_lk", "Sg_mk", "Sg_hk"];
 const punch = [undefined, "C0", "F+", "D+", "F0", "D0", "E0", "C+"];
 const kick = [undefined, "G0", "B0", "G+", "A+", undefined, "A0"];
+const octave = {'1': "+", '0': "0", '-1': "-"};
 let timeout, sound, oldsound;
 volume = 100;
 
@@ -26,7 +27,7 @@ function displayPlay(){
 function displayOptions(){
     string = "<button id='bindAll' onClick = 'bindAll()'>Bind All</button><br>  (ESC to cancel)<br>";
     for ([i, str] of buttons.entries()){
-        string += str.toUpperCase() + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>";
+        string += str + ": <button id='" + str + "b' onClick='tryBind(\"" + str + "\")'>";
         string += inputs[i] ? inputs[i].toUpperCase() : "Unbound"; 
         string += "</button><br>";
     }
@@ -53,10 +54,12 @@ async function handleInput() {
     for (i in inputState) {
         if (inputState[i] != prevInputState[i]){
             //Give button colour
-            document.getElementById(imgs[i]).src = "./img/" + imgs[i] + +inputState[i] + ".png";
+            if (i < 6) document.getElementById(imgs[i]).src = "./img/" + imgs[i] + +inputState[i] + ".png";
             anything = i <= 6 ? 2+inputState[i] : 1
         }
     }
+
+    console.log(inputState);
 
     if (anything) {
         prevInputState = [...inputState];
@@ -64,9 +67,10 @@ async function handleInput() {
             let note = punch[parseInt("" + +inputState[0] + +inputState[1] + +inputState[2], 2)];
             if (!note) note = kick[parseInt("" + +inputState[3] + +inputState[4] + +inputState[5], 2)]
             if (note) {
+                oct = inputState[6] - inputState[7];
                 oldsound = sound;
                 stop();
-                play('snd/' + 0 + note + '.mp3');
+                play('snd/' + octave[oct] + note + '.mp3');
             }
         }
     }

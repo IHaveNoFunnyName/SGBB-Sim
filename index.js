@@ -33,7 +33,8 @@ function displayOptions(){
         string += "</button><br>";
     }
 
-    string += "Volume: <input type=\"range\" min=\"0\" max=\"100\" value=\"" + volume + "\" class=\"slider\" id=\"volume\" oninput='updateVolume()'><div id=\"volumeDisplay\">100</div>";
+    string += "Volume: <input type=\"range\" min=\"0\" max=\"100\" value=\"" + volume + "\" class=\"slider\" id=\"volume\" oninput='updateVolume()'><div id=\"volumeDisplay\">100</div><br>";
+    string += "Bugs:<br>-Chrome aggressively unloads sounds after a couple minutes idle. A quick workaround minimized this, but it still happens rarely."
     content.innerHTML = string;
 
     updateVolume();

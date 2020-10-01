@@ -188,6 +188,7 @@ async function preLoadAudio(){ //hopefully, who knows
         if(file) {
             for (oct of ["-", "0", "+"]) {
             aud = new Audio('snd/' + oct + file + '.mp3');
+            aud.volume = Number.MIN_VALUE;
             try {
                 await aud.play();
             } catch (e) {}

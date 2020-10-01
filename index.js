@@ -156,7 +156,7 @@ function bindKey(event){
             document.getElementById(buttons[index] + 'b').innerHTML = "Unbound";
         }
         inputCs[this.input] = event.code;
-        inputs[this.input] = event.key.toUpperCase();
+        inputs[this.input] = event.key.toUpperCase() === " " ? "SPACE" : event.key.toUpperCase();
         this.btn.innerHTML = inputs[this.input];
         document.removeEventListener('keydown', this.bind);
         this.resolve();
